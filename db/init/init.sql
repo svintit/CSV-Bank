@@ -1,3 +1,7 @@
-CREATE TABLE csv_files ( firstname VARCHAR(100) NOT NULL, lastname VARCHAR(100) NOT NULL );
+CREATE TABLE IF NOT EXISTS csv_files (
+    id BIGSERIAL NOT NULL,
+    filename TEXT NOT NULL,
+    csv_file TEXT NOT NULL,
+    created_at TIMESTAMP NOT NULL
+);
 
-INSERT INTO csv_files VALUES ('james', 'lebron');

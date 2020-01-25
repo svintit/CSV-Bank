@@ -1,42 +1,45 @@
-version: '3.5'
+version: '3.7'
 
 services:
 
   db:
-    image: postgres
+    network_mode: host
+    image: postgres:12
     container_name: postgres
     ports:
-      - '5432'
+      - '5432:5432'
+    volumes:
+      - './db/init:/docker-entrypoint-initdb.d/'
     environment:
       - POSTGRES_DB=csv_bank
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-    volumes:
-      - './db/init:/docker-entrypoint-initdb.d/'
 
   flask-api:
+    network_mode: host
     container_name: csv-bank-flask
     restart: always
     build:
       context: csv_bank_backend/
       dockerfile: Dockerfile
     ports:
-      - "8000"
+      - "8000:8000"
     volumes:
       - ./csv_bank_backend:/usr/src/app
     depends_on:
       - "db"
 
   client:
+    network_mode: host
     container_name: csv-bank-react
     build:
       context: csv_bank_client
       dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
     volumes:
       - './csv_bank_client:/usr/src/app'
       - '/usr/src/app/node_modules'
-    ports:
-      - '3000:3000'
     depends_on:
       - "flask-api"
     environment:

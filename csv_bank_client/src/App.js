@@ -18,7 +18,7 @@ class App extends Component {
   }
 
   render() {
-    const csv_files = this.state.csv_file.map(
+    const csv_files = this.state.csv_files.map(
         (csv_file, index) => <li key={index}>{csv_file.lastname} {csv_file.firstname}</li>
     );
 
