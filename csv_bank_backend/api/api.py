@@ -8,10 +8,9 @@ api = Api()
 
 
 class CsvFile(Resource):
-
     @staticmethod
     def get():
         return jsonify([to_dict(csv_file) for csv_file in CsvFileModel.query.all()])
 
 
-api.add_resource(CsvFile, '/')
+api.add_resource(CsvFile, "/")

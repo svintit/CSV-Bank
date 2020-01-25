@@ -6,7 +6,7 @@ services:
     image: postgres
     container_name: postgres
     ports:
-      - '5432:5432'
+      - '5432'
     environment:
       - POSTGRES_DB=csv_bank
       - POSTGRES_USER=postgres
@@ -18,22 +18,22 @@ services:
     container_name: csv-bank-flask
     restart: always
     build:
-      context: ./backend/
+      context: csv_bank_backend/
       dockerfile: Dockerfile
     ports:
-      - "5000:80"
+      - "8000"
     volumes:
-      - ./backend:/usr/src/app
+      - ./csv_bank_backend:/usr/src/app
     depends_on:
       - "db"
 
   client:
     container_name: csv-bank-react
     build:
-      context: ./client
+      context: csv_bank_client
       dockerfile: Dockerfile
     volumes:
-      - './client:/usr/src/app'
+      - './csv_bank_client:/usr/src/app'
       - '/usr/src/app/node_modules'
     ports:
       - '3000:3000'

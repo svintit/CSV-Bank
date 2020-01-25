@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 import { CONFIG } from './config.js';
 
@@ -18,7 +18,9 @@ class App extends Component {
   }
 
   render() {
-    const csv_file = this.state.csv_file.map((csv_file, index) => <li key={index}>{csv_file.lastname} {csv_file.firstname}</li>);
+    const csv_files = this.state.csv_file.map(
+        (csv_file, index) => <li key={index}>{csv_file.lastname} {csv_file.firstname}</li>
+    );
 
     return (
       <div>
