@@ -1,6 +1,8 @@
+import werkzeug
+import uuid
+
 from flask import jsonify
 from flask_restful import Resource, Api, reqparse
-
 
 from .handler import create_csv_entry
 from .models import CsvFileModel, to_dict
@@ -18,8 +20,8 @@ class GetCsvFiles(Resource):
 post_parser: reqparse.RequestParser = reqparse.RequestParser()
 post_parser.add_argument(
     "csv_file",
-    dest="csv_file",
-    location="form",
+    type=werkzeug.FileStorage,
+    location="files",
     required=True,
     help="The csv file",
 )
@@ -30,12 +32,12 @@ class CreateCsvEntry(Resource):
     def post():
         request_args = post_parser.parse_args()
 
-        new_entry: CreateCsvEntry = create_csv_entry(
-            model=CreateCsvEntry,
-            filename=request_args.filename,
+        file_id: uuid.UUID = create_csv_entry(
+            model=CsvFileModel,
+            filename=request_args.csv_file.filename,
             csv_file=request_args.csv_file,
         )
-        return jsonify(to_dict(new_entry))
+        return {"file_id": str(file_id)}
 
 
 api.add_resource(GetCsvFiles, "/my-bank")

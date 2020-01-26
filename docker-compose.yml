@@ -5,9 +5,9 @@ services:
   db:
     network_mode: host
     image: postgres:12
-    container_name: postgres
+    command: -p 5431  # Non-default port to avoid failed binding
     ports:
-      - '5432:5432'
+      - '5431:5431'  # Non-default port to avoid failed binding
     volumes:
       - './db/init:/docker-entrypoint-initdb.d/'
     environment:
@@ -17,7 +17,6 @@ services:
 
   flask-api:
     network_mode: host
-    container_name: csv-bank-flask
     restart: always
     build:
       context: csv_bank_backend/
@@ -31,17 +30,15 @@ services:
 
   client:
     network_mode: host
-    container_name: csv-bank-react
     build:
       context: csv_bank_client
       dockerfile: Dockerfile
+    working_dir: /usr/src/app
     ports:
       - '3000:3000'
     volumes:
       - './csv_bank_client:/usr/src/app'
-      - '/usr/src/app/node_modules'
-    depends_on:
-      - "flask-api"
+      - './csv_bank_client/node_modules:/usr/src/app/node_modules'
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true

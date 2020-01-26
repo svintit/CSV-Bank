@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-// import logo from './logo.svg';
-import './App.css';
 import { CONFIG } from './config.js';
+
 
 class App extends Component {
   constructor() {
@@ -24,10 +23,12 @@ class App extends Component {
 
     return (
       <div>
-          <h1>Csv Files List</h1>
-          <ul>
-            {csv_files}
-          </ul>
+          <div className="animated bounceInDown main-title">
+            <h1>CSV BANK</h1>
+          </div>
+        <div>
+
+        </div>
       </div>
     );
   }

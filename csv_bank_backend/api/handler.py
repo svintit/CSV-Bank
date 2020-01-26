@@ -1,4 +1,4 @@
-import csv
+import io
 
 from datetime import datetime
 from uuid import uuid4
@@ -7,12 +7,13 @@ from .models import db
 
 
 def create_csv_entry(model, filename, csv_file):
-    reader = csv.reader(csv_file, delimiter=",")
-    text_csv = [row for row in reader]
+    text_csv = csv_file.stream.read().decode("utf-8")
+    file_id = uuid4()
 
     new_entry = model(
-        id=uuid4(), filename=filename, csv_file=text_csv, created_at=datetime.utcnow()
+        file_id=file_id, filename=filename, csv_file=text_csv, created_at=datetime.utcnow()
     )
     db.session.add(new_entry)
     db.session.commit()
-    return new_entry
+    csv_file.close()
+    return file_id
