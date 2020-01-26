@@ -1,0 +1,32 @@
+body {
+    height: 100vh;
+    margin: 0;
+    font-family: 'Roboto Condensed', sans-serif;;
+    background: url("background.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.main-title {
+    padding-top: 1px;
+    color: white;
+    font-size: 70px;
+    text-align: center;
+    margin-bottom: -70px;
+    animation-delay: 0.7s;
+}
+
+.button-container {
+    text-align: center;
+    animation-delay: 0.7s;
+}
+
+.button {
+    margin: 0 10px 0 10px;
+    display: inline-block;
+}
+
+h1 {
+    -webkit-text-stroke-width: 5px;
+    -webkit-text-stroke-color: darkslateblue;
+}

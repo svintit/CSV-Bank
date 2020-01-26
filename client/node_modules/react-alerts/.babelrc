@@ -1,0 +1,11 @@
+{
+  "plugins": [
+    "add-module-exports",
+    "syntax-object-rest-spread"
+  ],
+  "presets": [
+    "es2015",
+     "react",
+     "stage-0"
+  ]
+}

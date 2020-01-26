@@ -19,26 +19,26 @@ services:
     network_mode: host
     restart: always
     build:
-      context: csv_bank_backend/
+      context: backend/
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
     volumes:
-      - ./csv_bank_backend:/usr/src/app
+      - ./backend:/usr/src/app
     depends_on:
       - "db"
 
   client:
     network_mode: host
     build:
-      context: csv_bank_client
+      context: client
       dockerfile: Dockerfile
     working_dir: /usr/src/app
     ports:
       - '3000:3000'
     volumes:
-      - './csv_bank_client:/usr/src/app'
-      - './csv_bank_client/node_modules:/usr/src/app/node_modules'
+      - './client:/usr/src/app'
+      - './client/node_modules:/usr/src/app/node_modules'
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true

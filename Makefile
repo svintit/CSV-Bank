@@ -11,7 +11,7 @@ test:
 all: build run
 
 build:
-	pipenv lock --requirements > csv_bank_backend/requirements.txt
+	pipenv lock --requirements > backend/requirements.txt
 	docker-compose build
 
 run:
