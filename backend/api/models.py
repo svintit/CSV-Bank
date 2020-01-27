@@ -11,7 +11,9 @@ db = SQLAlchemy()
 class CsvFileModel(db.Model):
 
     __tablename__ = "csv_files"
-    file_id = db.Column(UUID(as_uuid=True), nullable=False, primary_key=True, unique=True)
+    file_id = db.Column(
+        UUID(as_uuid=True), nullable=False, primary_key=True, unique=True
+    )
     filename = db.Column(db.String(length=100), nullable=False)
     csv_file = db.Column(db.String(length=None), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False)

@@ -21,6 +21,10 @@ body {
     animation-delay: 0.7s;
 }
 
+.alert {
+    position: top;
+}
+
 .button {
     margin: 0 10px 0 10px;
     display: inline-block;

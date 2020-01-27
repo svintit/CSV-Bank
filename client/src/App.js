@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { AwesomeButton } from "react-awesome-button";
 import InputFiles from 'react-input-files';
 import 'react-awesome-button/dist/themes/theme-c137.css';
+import Swal from 'sweetalert2'
 
-async function postFile(file) {
+
+async function postFile(file, that) {
     const formData = new FormData()
     formData.append("csv_file", file[0])
     const response = await fetch("/upload", {
@@ -11,24 +13,52 @@ async function postFile(file) {
         body: formData,
     });
     if (response.ok) {
-        alert("File Uploaded Successfully!")
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'File has been saved!',
+            showConfirmButton: false,
+            timer: 2000,
+            backdrop: false
+        })
     } else {
-      alert("HTTP-Error: " + response.status);
+        Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: "HTTP-Error: " + response.status,
+            showConfirmButton: false,
+            timer: 4000,
+            backdrop: false
+        })
     }
 }
 
 async function getFiles() {
+    Swal.fire({
+        position: 'center',
+        icon: 'info',
+        title: 'Pulling files...',
+        showConfirmButton: false,
+        timer: 1500,
+        backdrop: false
+    })
     const response = await fetch("/my-bank", {
         method: "GET"
     });
-    alert("Pulling files...")
 
     if (response.ok) {
         let json = await response.json();
         console.log(json);
         return json;
     } else {
-      alert("HTTP-Error: " + response.status);
+        Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: "HTTP-Error: " + response.status,
+            showConfirmButton: false,
+            timer: 4000,
+            backdrop: false
+        })
     }
 }
 
@@ -46,16 +76,14 @@ class App extends Component {
                             type="primary"
                             ripple
                             onPress={() => {
-                                for (var key in getFiles()) {
-                                    alert(key)
-                                }
+                                getFiles()
                             }}
                         >
                             <h2>My Files</h2>
                         </AwesomeButton>
                     </div>
                     <div className="button">
-                        <InputFiles onChange={files => postFile(files)} accept=".csv">
+                        <InputFiles onChange={files => postFile(files, this)} accept=".csv">
                             <AwesomeButton
                                 size="medium"
                                 type="primary"

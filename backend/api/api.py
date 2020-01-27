@@ -1,11 +1,16 @@
-import werkzeug
 import uuid
+import werkzeug
+
+import pandas as pd
 
 from flask import jsonify
 from flask_restful import Resource, Api, reqparse
+from pandas import DataFrame
 
-from .handler import create_csv_entry
+from .handler import create_csv_entry, fill_in_blank
 from .models import CsvFileModel, to_dict
+
+from typing import Dict
 
 
 api: Api = Api()
@@ -13,8 +18,11 @@ api: Api = Api()
 
 class GetCsvFiles(Resource):
     @staticmethod
-    def get():
-        return jsonify([to_dict(csv_file) for csv_file in CsvFileModel.query.all()])
+    def get() -> Dict:
+        for row in CsvFileModel.query.all():
+            row.csv_file = fill_in_blank(row.csv_file)
+
+        return jsonify([to_dict(row) for row in CsvFileModel.query.all()])
 
 
 post_parser: reqparse.RequestParser = reqparse.RequestParser()
@@ -29,7 +37,7 @@ post_parser.add_argument(
 
 class CreateCsvEntry(Resource):
     @staticmethod
-    def post():
+    def post() -> Dict:
         request_args = post_parser.parse_args()
 
         file_id: uuid.UUID = create_csv_entry(
