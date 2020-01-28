@@ -1,0 +1,194 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "2.0.0",
+        "title": "Telnyx API",
+        "description": "Csv Bank",
+        "license": {
+            "name": "MIT"
+        },
+        "contact": {
+            "email": "traian.svinti@gmail.com"
+        }
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1/",
+            "description": "Localhost"
+        }
+    ],
+    "paths": {
+        "/upload": {
+            "post": {
+                "summary": "Create new csv_file record in db",
+                "tags": [
+                    "CSV Bank"
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "file": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/csvPostResponse"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/GenericErrorResponse"
+                    }
+                }
+            }
+        },
+        "/my-bank": {
+            "get": {
+                "summary": "Pull csv_file record from db",
+                "tags": [
+                    "CSV Bank"
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/csvGetResponse"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/GenericErrorResponse"
+                    }
+                }
+            }
+        },
+        "/my-bank/{file_id}": {
+            "get": {
+                "summary": "Get one record frmo db",
+                "tags": [
+                    "CSV Bank"
+                ],
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/csv_file_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/csvGetResponse"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/GenericErrorResponse"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Error": {
+                "required": [
+                    "code",
+                    "title"
+                ],
+                "properties": {
+                    "code": {
+                        "type": "string",
+                        "format": "int"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "detail": {
+                        "type": "string"
+                    },
+                    "source": {
+                        "type": "object",
+                        "properties": {
+                            "pointer": {
+                                "description": "JSON pointer (RFC6901) to the offending entity.",
+                                "type": "string",
+                                "format": "json-pointer"
+                            },
+                            "parameter": {
+                                "description": "Indicates which query parameter caused the error.",
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "meta": {
+                        "type": "object"
+                    }
+                }
+            },
+            "Errors": {
+                "properties": {
+                    "errors": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "parameters": {
+            "csv_file_id": {
+                "name": "file_id",
+                "in": "path",
+                "description": "The id of the csv_file object",
+                "required": true,
+                "schema": {
+                    "type": "string",
+                    "format": "uuid"
+                }
+            }
+        },
+        "responses": {
+            "GenericErrorResponse": {
+                "description": "unexpected error",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Errors"
+                        }
+                    }
+                }
+            },
+            "csvPostResponse": {
+                "description": "Response of upload",
+                "content": {
+                    "text/csv": {
+                        "schema": {
+                            "type": "object"
+                        },
+                        "example": {
+                            "file_id": "45b545-b454b23-2334b-32254"
+                        }
+                    }
+                }
+            },
+            "csvGetResponse": {
+                "description": "Response of upload",
+                "content": {
+                    "text/csv": {
+                        "schema": {
+                            "type": "object"
+                        },
+                        "example": [
+                            {
+                                "file_id": "45b545-b454b23-2334b-32254",
+                                "csv_file": "*str_file*",
+                                "filename": "example.csv",
+                                "created_at": "2020-01-23 12:43:33"
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}
