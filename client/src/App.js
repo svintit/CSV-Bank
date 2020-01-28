@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { AwesomeButton } from "react-awesome-button";
 import InputFiles from 'react-input-files';
 import 'react-awesome-button/dist/themes/theme-c137.css';
-import Swal from 'sweetalert2'
+import DbRows from './components/db-rows';
+import Swal from 'sweetalert2';
 
 
-async function postFile(file, that) {
+async function postFile(file) {
     const formData = new FormData()
     formData.append("csv_file", file[0])
     const response = await fetch("/upload", {
@@ -33,36 +34,51 @@ async function postFile(file, that) {
     }
 }
 
-async function getFiles() {
-    Swal.fire({
-        position: 'center',
-        icon: 'info',
-        title: 'Pulling files...',
-        showConfirmButton: false,
-        timer: 1500,
-        backdrop: false
-    })
+async function getFiles(that) {
     const response = await fetch("/my-bank", {
         method: "GET"
     });
 
     if (response.ok) {
-        let json = await response.json();
-        console.log(json);
-        return json;
+        const data = await response.json();
+        if (data.length > 0) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Database queried successfully!',
+                showConfirmButton: false,
+                timer: 2000,
+                backdrop: false
+            })
+        } else {
+            Swal.fire({
+                position: 'center',
+                icon: 'warning',
+                title: 'No saved files!',
+                showConfirmButton: false,
+                timer: 2000,
+                backdrop: false
+            })
+        }
+        that.setState({ rows: data })
     } else {
         Swal.fire({
             position: 'center',
             icon: 'error',
             title: "HTTP-Error: " + response.status,
             showConfirmButton: false,
-            timer: 4000,
+            timer: 5000,
             backdrop: false
         })
     }
 }
 
 class App extends Component {
+
+    state = {
+        rows: []
+    }
+
     render() {
         return (
             <div>
@@ -76,14 +92,15 @@ class App extends Component {
                             type="primary"
                             ripple
                             onPress={() => {
-                                getFiles()
+                                const that = this
+                                getFiles(that)
                             }}
                         >
                             <h2>My Files</h2>
                         </AwesomeButton>
                     </div>
                     <div className="button">
-                        <InputFiles onChange={files => postFile(files, this)} accept=".csv">
+                        <InputFiles onChange={files => postFile(files)} accept=".csv">
                             <AwesomeButton
                                 size="medium"
                                 type="primary"
@@ -93,8 +110,8 @@ class App extends Component {
                             </AwesomeButton>
                         </InputFiles>
                     </div>
-                    <div className="files-list">
-
+                    <div className="files-list" style={{overflow: 'auto', maxHeight: 400}}>
+                         <DbRows rows={this.state.rows} />
                     </div>
                 </div>
             </div>

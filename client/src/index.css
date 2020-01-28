@@ -7,6 +7,11 @@ body {
     background-size: cover;
 }
 
+h1 {
+    -webkit-text-stroke-width: 5px;
+    -webkit-text-stroke-color: darkslateblue;
+}
+
 .main-title {
     padding-top: 1px;
     color: white;
@@ -19,6 +24,7 @@ body {
 .button-container {
     text-align: center;
     animation-delay: 0.7s;
+    margin-bottom: 20px;
 }
 
 .alert {
@@ -30,7 +36,3 @@ body {
     display: inline-block;
 }
 
-h1 {
-    -webkit-text-stroke-width: 5px;
-    -webkit-text-stroke-color: darkslateblue;
-}

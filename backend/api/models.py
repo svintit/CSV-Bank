@@ -18,14 +18,12 @@ class CsvFileModel(db.Model):
     csv_file = db.Column(db.String(length=None), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False)
 
-    def __repr__(self):
-        return "<Csv File -> %r>" % self.filename + " | " + self.created_at
-
 
 def to_dict(obj):
+    fields = {}
+
     if isinstance(obj.__class__, DeclarativeMeta):
         # an SQLAlchemy class
-        fields = {}
         for field in [x for x in dir(obj) if not x.startswith("_") and x != "metadata"]:
             data = obj.__getattribute__(field)
             try:
@@ -35,6 +33,11 @@ def to_dict(obj):
                 if data is not None:
                     fields[field] = data
             except TypeError:
-                pass
-        # a json-encodable dict
-        return fields
+                fields[field] = str(data)
+    else:
+        fields["filename"] = obj[0]
+        fields["created_at"] = str(obj[1].replace(microsecond=0))
+        fields["file_id"] = obj[2]
+
+    # a json-encodable dict
+    return fields

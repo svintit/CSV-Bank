@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS csv_files (
+CREATE TABLE csv_files (
     file_id UUID NOT NULL,
     filename TEXT NOT NULL,
     csv_file TEXT NOT NULL,

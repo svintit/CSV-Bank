@@ -35,4 +35,4 @@ def fill_in_blank(csv_text: str):
     except KeyError:
         pass  # Some CSV's will not have this column
 
-    return df.to_csv()
+    return df.to_csv(index=False)

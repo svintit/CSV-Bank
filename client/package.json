@@ -8,10 +8,10 @@
     "node-sass": "^4.13.1",
     "react": "^16.12.0",
     "react-awesome-button": "^6.5.1",
-    "react-csv-viewer": "^1.0.4",
+    "react-csv": "^1.1.2",
+    "react-csv-to-table": "0.0.4",
     "react-dom": "^16.12.0",
     "react-input-files": "^1.2.0",
-    "react-list": "^0.8.13",
     "react-scripts": "3.3.0",
     "sweetalert2": "^9.7.0",
     "typescript": "^3.7.5"
